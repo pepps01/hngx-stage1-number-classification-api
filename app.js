@@ -3,48 +3,20 @@ const app = express()
 const axios = require('axios');
 const cors = require('cors');
 const port = process.env.PORT || 3000
- 
+const { isPrime, isPerfect, isArmstrong, digitSum } = require('./NumberUtils');
 
-function isPrime(num) {
-    if (num <= 1) return false;
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-        if (num % i === 0) return false;
-    }
-    return true;
-}
 
-// Check if a number is perfect
-function isPerfect(num) {
-    let sum = 0;
-    for (let i = 1; i < num; i++) {
-        if (num % i === 0) sum += i;
-    }
-    return sum === num;
-}
 
-// Check if a number is Armstrong
-function isArmstrong(num) {
-    const digits = num.toString().split('');
-    const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), digits.length), 0);
-    return sum === num;
-}
 
-// Calculate sum of digits
-function digitSum(num) {
-    return num.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
-}
 
 
 app.get('/api/classify-number', async(req, res) => {
   const number = req.query.number;
-  
-  if (!number) {
-    return res.status(400).json({
-      error: "Email query parameter is required"
-    });
-  }
-
-     // Validate the input
+    if (!number) {
+        return res.status(400).json({
+        error: "Email query parameter is required"
+        });
+    }
      if (isNaN(number)) {
         return res.status(400).json({
             number: number,
